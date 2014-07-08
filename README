@@ -7,9 +7,11 @@ Gehwah is a Bootstrap helper. It makes a developer's life easier by extracting s
 	* ./public/css/
 If above folders are not existing, then http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/ will be used to get bootstrap css files.
 
-By default, Gehwah saves the results in ./bootstrap.gehwah.css, ./bootstrap-theme.gehwah.css.
+By default, Gehwah saves the results in ./bootstrap.gehwah.css, ./bootstrap-theme.gehwah.css. 
 
-Usage of Gehwah is:
+Gehwah accepts GET and POST requests from www.gehwah.com (coming soon) where $_REQUEST['class'] must be given.
+
+It also can be run as command lines. Usage of Gehwah in command line is:
 
 gehwah.php -c|-class [class name] [-option value]
 
