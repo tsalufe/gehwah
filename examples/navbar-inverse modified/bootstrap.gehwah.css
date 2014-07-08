@@ -1,0 +1,21 @@
+.navbar-shine{background-color:#222;border-color:#eeeeee}
+.navbar-shine .navbar-brand{color:#cccccc}
+.navbar-shine .navbar-brand:hover,.navbar-shine .navbar-brand:focus{color:#fff;background-color:transparent}
+.navbar-shine .navbar-text{color:#cccccc}
+.navbar-shine .navbar-nav>li>a{color:#cccccc}
+.navbar-shine .navbar-nav>li>a:hover,.navbar-shine .navbar-nav>li>a:focus{color:#fff;background-color:transparent}
+.navbar-shine .navbar-nav>.active>a,.navbar-shine .navbar-nav>.active>a:hover,.navbar-shine .navbar-nav>.active>a:focus{color:#fff;background-color:#080808}
+.navbar-shine .navbar-nav>.disabled>a,.navbar-shine .navbar-nav>.disabled>a:hover,.navbar-shine .navbar-nav>.disabled>a:focus{color:#444;background-color:transparent}
+.navbar-shine .navbar-toggle{border-color:#333}
+.navbar-shine .navbar-toggle:hover,.navbar-shine .navbar-toggle:focus{background-color:#333}
+.navbar-shine .navbar-toggle .icon-bar{background-color:#fff}
+.navbar-shine .navbar-collapse,.navbar-shine .navbar-form{border-color:#101010}
+.navbar-shine .navbar-nav>.open>a,.navbar-shine .navbar-nav>.open>a:hover,.navbar-shine .navbar-nav>.open>a:focus{color:#fff;background-color:#080808}
+.navbar-shine .navbar-nav .open .dropdown-menu>.dropdown-header{border-color:#080808}
+.navbar-shine .navbar-nav .open .dropdown-menu .divider{background-color:#080808}
+.navbar-shine .navbar-nav .open .dropdown-menu>li>a{color:#cccccc}
+.navbar-shine .navbar-nav .open .dropdown-menu>li>a:hover,.navbar-shine .navbar-nav .open .dropdown-menu>li>a:focus{color:#fff;background-color:transparent}
+.navbar-shine .navbar-nav .open .dropdown-menu>.active>a,.navbar-shine .navbar-nav .open .dropdown-menu>.active>a:hover,.navbar-shine .navbar-nav .open .dropdown-menu>.active>a:focus{color:#fff;background-color:#080808}
+.navbar-shine .navbar-nav .open .dropdown-menu>.disabled>a,.navbar-shine .navbar-nav .open .dropdown-menu>.disabled>a:hover,.navbar-shine .navbar-nav .open .dropdown-menu>.disabled>a:focus{color:#444;background-color:transparent}
+.navbar-shine .navbar-link{color:#cccccc}
+.navbar-shine .navbar-link:hover{color:#fff}
