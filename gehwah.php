@@ -2,7 +2,7 @@
 <?php
 
 echo "\nGehwah is a bootstrap helper.\n Your bootstrap.min.css should be located in one of the following directories and scanned in the following order:\n	* ./\n	* ./css/\n	* ./public/css/\n	* http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/\n\n";
-$bsfiles=array('bootstrap-theme.min.css','bootstrap.min.css');// http://bootstrap files, bootstrap.min.css
+$bsfiles=array('bootstrap-theme.min.css','bootstrap.min.css');// bootstrap files, bootstrap.min.css
 $bspaths=array();
 
 foreach($bsfiles as $bsfile){
