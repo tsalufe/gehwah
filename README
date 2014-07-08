@@ -1,1 +1,10 @@
-Gehwah is to make easy modifying/cloing Bootstrap styles.
+Gehwah is a Bootstrap helper. It makes a developer's life easier by extracting specific Bootstrap css styles from Bootstrap css files.
+
+Usage of Gehwah is:
+
+gehwah.php -c|-class [class name] [-option value]
+
+-c [class name] is required for Gehwah to start, for example gehwah.php -c .navbar-inverse is to show all css styles defined for .navbar-inverse. In example/modified navbar-inverse/, there is modified .navbar-inverse, namely .navbar-gehwah which has the same styling effects as .navbar-inverse, but different color.
+
+[-option value] is optional. For example,
+-e abc is to save the found css styles into files with '.abc.' replacing '.min.' in bootstrap css files, including bootstrap.min.css, bootstrap-theme.min.css.
