@@ -1,7 +1,13 @@
 AUTHOR: Billy Cai
 Email: tsalufe@gmail.com
 
-Gehwah is a Bootstrap helper. It makes a developer's life easier by extracting specific Bootstrap css styles from Bootstrap css files.
+Gehwah is a Bootstrap helper. It makes a developer's life easier by extracting specific Bootstrap css styles from Bootstrap css files. Gehwah recognizes the following folders to search for bootstrap files:
+	* ./
+	* ./css/
+	* ./public/css/
+If above folders are not existing, then http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/ will be used to get bootstrap css files.
+
+By default, Gehwah saves the results in ./bootstrap.gehwah.css, ./bootstrap-theme.gehwah.css.
 
 Usage of Gehwah is:
 
