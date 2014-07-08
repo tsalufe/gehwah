@@ -8,3 +8,5 @@ gehwah.php -c|-class [class name] [-option value]
 
 [-option value] is optional. For example,
 -e abc is to save the found css styles into files with '.abc.' replacing '.min.' in bootstrap css files, including bootstrap.min.css, bootstrap-theme.min.css.
+
+ Billy Cai
