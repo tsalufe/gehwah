@@ -32,7 +32,7 @@ if($allR['ext'][0]!=='.') $allR['ext']='.'.$allR['ext'];
 if($allR['ext'][strlen($allR['ext'])-1]!=='.') $allR['ext'].='.';
 $extension=$allR['ext'];
 
-foreach($bspaths as $bspath){
+foreach($bspaths as $i=>$bspath){
 	$bootstrap=file_get_contents($bspath);
 	preg_match_all($regex,$bootstrap,$matched_csses);
 	if(count($matched_csses[0])>0){
@@ -42,7 +42,7 @@ foreach($bspaths as $bspath){
 			$css.=$matched_css."\n";
 		}
 		echo $css;
-		file_put_contents(preg_replace('/\.min\./',$extension,$bspath),$css);
+		file_put_contents(preg_replace('/\.min\./',$extension,$bsfiles[$i]),$css);
 		echo "\n";
 	}
 }
