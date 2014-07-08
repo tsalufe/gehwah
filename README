@@ -1,3 +1,6 @@
+AUTHOR: Billy Cai
+Email: tsalufe@gmail.com
+
 Gehwah is a Bootstrap helper. It makes a developer's life easier by extracting specific Bootstrap css styles from Bootstrap css files.
 
 Usage of Gehwah is:
@@ -9,4 +12,4 @@ gehwah.php -c|-class [class name] [-option value]
 [-option value] is optional. For example,
 -e abc is to save the found css styles into files with '.abc.' replacing '.min.' in bootstrap css files, including bootstrap.min.css, bootstrap-theme.min.css.
 
- Billy Cai
+Billy 
