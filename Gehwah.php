@@ -19,7 +19,7 @@ class Gehwah
 		return $usage_str;
 	}
 
-	public function __construct($options=null){
+	public function __construct(){
 
 		$this->bsfiles=array('bootstrap-theme.min.css','bootstrap.min.css');// bootstrap files, bootstrap.min.css
 		$this->bspaths=array();
@@ -36,23 +36,27 @@ class Gehwah
 				$this->bspaths[]='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/'.$bsfile;
 			}
 		}
-		$this->selector='.';
+		$this->extension='gehwah';
+	}
+
+	public function InitFromRequests($options=null){
 		if($options==null||!is_array($options)) Requests::InitForGehwah();
 		else Requests::Add($options);
 		$allR=Requests::All();
 		if(!isset($allR['class'])){
 			$this->error="\nMissing class name to start.\nUsage:\n".Gehwah::usage();
 		}
-		$this->selector=$allR['class'];
+		$this->SetSelector($allR['class']);
+		if(isset($allR['ext'])) $this->extension=$allR['ext'];
+	}
+
+	public function SetSelector($selector){
+		$this->selector=$selector;
 		$this->regex='/[\\.a-z0-9_ >+\\-]*\\'.$this->selector.'([^a-z0-9_\\-\\{][^{]*{|{)[^}]*}/';
-		if(!isset($allR['ext'])||strlen($allR['ext'])==0){
-			$allR['ext']='gehwah';
-		}
-		$this->extension=$allR['ext'];
 	}
 
 	public function run(){
-		$this->GetCssFromBootstrap();
+		return $this->GetCssFromBootstrap();
 	}
 	
 	public function GetCssFromBootstrap(){
@@ -68,9 +72,26 @@ class Gehwah
 				$this->css.=$css."\n";
 			}
 		}
+		return $this->css;
 	}
 	public function SaveToFile($name){
 			file_put_contents($name.'.'.$this->extension.".css",$this->css);
+	}
+
+	public static function ProcessClasses($classes){
+		if(is_string($classes)){
+			$classes=preg_split('/[,;]/',$classes);
+		}
+		if(is_array($classes)){
+			$gw=new Gehwah();
+			$css='';
+			foreach($classes as $class){
+				$gw->SetSelector($class);
+				$css.=$gw->GetCssFromBootstrap();
+			}
+			return $css;
+		}
+		else return '';
 	}
 }
 
@@ -100,6 +121,7 @@ class Requests{
 		$allR=$_REQUEST;
 		$i=0;
 		unset($allR['ext']);
+		$argc=count($argv);
 		while($i<$argc){
 			switch($argv[$i]){
 				case '-c':
