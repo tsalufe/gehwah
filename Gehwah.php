@@ -37,6 +37,7 @@ class Gehwah
 			}
 		}
 		$this->selector='.';
+		Requests::InitForGehwah();
 		$allR=Requests::All();
 		if(!isset($allR['class'])){
 			$this->error="\nMissing class name to start.\nUsage:\n".Gehwah::usage();
@@ -83,8 +84,14 @@ class Requests{
 	public static function All(){
 		if(self::$_requests!==null) return Requests::$_requests;
 		else {
-			self::InitForGehwah();
+			self::$_requests=array();
 			return self::$_requests;
+		}
+	}
+
+	public static function Add($array){
+		if(count($array)>0){
+			self::$_requests=array_merge(self::$_requests,$array);
 		}
 	}
 
