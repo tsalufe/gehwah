@@ -19,7 +19,7 @@ class Gehwah
 		return $usage_str;
 	}
 
-	public function __construct(){
+	public function __construct($options=null){
 
 		$this->bsfiles=array('bootstrap-theme.min.css','bootstrap.min.css');// bootstrap files, bootstrap.min.css
 		$this->bspaths=array();
@@ -37,7 +37,8 @@ class Gehwah
 			}
 		}
 		$this->selector='.';
-		Requests::InitForGehwah();
+		if($options==null||!is_array($options)) Requests::InitForGehwah();
+		else Requests::Add($options);
 		$allR=Requests::All();
 		if(!isset($allR['class'])){
 			$this->error="\nMissing class name to start.\nUsage:\n".Gehwah::usage();
@@ -47,8 +48,6 @@ class Gehwah
 		if(!isset($allR['ext'])||strlen($allR['ext'])==0){
 			$allR['ext']='gehwah';
 		}
-		if($allR['ext'][0]!=='.') $allR['ext']='.'.$allR['ext'];
-		if($allR['ext'][strlen($allR['ext'])-1]!=='.') $allR['ext'].='.';
 		$this->extension=$allR['ext'];
 	}
 
@@ -71,7 +70,7 @@ class Gehwah
 		}
 	}
 	public function SaveToFile($name){
-			file_put_contents($name.".".$this->extension.".css",$this->css);
+			file_put_contents($name.'.'.$this->extension.".css",$this->css);
 	}
 }
 
@@ -90,6 +89,7 @@ class Requests{
 	}
 
 	public static function Add($array){
+		if(self::$_requests==null) self::$_requests=array();
 		if(count($array)>0){
 			self::$_requests=array_merge(self::$_requests,$array);
 		}
