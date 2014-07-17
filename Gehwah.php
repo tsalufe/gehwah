@@ -95,6 +95,33 @@ class Gehwah
 	}
 }
 
+class HtmlClasses{
+	public $html;
+	public $classes;
+	public function __construct($html){
+		$this->html=$html;
+	}
+	public function run(){
+		return $this->RetrieveClasses();
+	}
+	public function RetrieveClasses(){
+		$this->classes=array();
+		$regex="/<[^>]*class=['\"]([^'\"]+)['\"][^>]*>/";
+		preg_match_all($regex,$this->html,$matched);
+		if(isset($matched[1])){
+			foreach($matched[1] as $class_str){
+				$classes=preg_split('/[ ]+/',$class_str);
+				foreach($classes as $class){
+					if(!in_array($class,$this->classes)){
+						$this->classes[]=$class;
+					}
+				}
+			}
+		}
+		return $this->classes;
+	}
+}
+
 class Requests{
 	public static $_requests;
 
