@@ -79,6 +79,7 @@ class Gehwah
 	}
 
 	public static function ProcessClasses($classes){
+		print_r($classes);
 		if(is_string($classes)){
 			$classes=preg_split('/[,;]/',$classes);
 		}
@@ -112,8 +113,8 @@ class HtmlClasses{
 			foreach($matched[1] as $class_str){
 				$classes=preg_split('/[ ]+/',$class_str);
 				foreach($classes as $class){
-					if(!in_array($class,$this->classes)){
-						$this->classes[]=$class;
+					if(!in_array('.'.$class,$this->classes)){
+						$this->classes[]='.'.$class;
 					}
 				}
 			}
