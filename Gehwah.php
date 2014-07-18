@@ -2,40 +2,24 @@
 
 class Gehwah
 {
-	public $bsfiles;
 	public $bspaths;
-	public $regex='';
+	public $nomedia_regex='';
+	public $media_regex='';
 	public $selector;
 	public $extension;
+
+	public $bstags;
+	public $bsmedias;
+	public $bsclasses;
 
 	public $css='';
 
 	public $logs='';
 	public $error='';
 
-	public static function usage(){
-		$usage_str="	* gehwah -c .[class name] [-e [extension name]]\n	* gehwah -class .[class name] [-ext [extension name]]\n";
-		$usage_str.="\n";
-		return $usage_str;
-	}
-
 	public function __construct(){
 
-		$this->bsfiles=array('bootstrap-theme.min.css','bootstrap.min.css');// bootstrap files, bootstrap.min.css
-		$this->bspaths=array();
-		
-		foreach($this->bsfiles as $bsfile){
-			if(file_exists('./'.$bsfile)){
-				$this->bspaths[]='./'.$bsfile;
-			}elseif(file_exists('./css/'.$bsfile)){
-				$this->bspaths[]='./css/'.$bsfile;
-			}elseif(file_exists('./public/css'.$bsfile)){
-				$this->bspaths[]='./public/css/'.$bsfile;
-			}else{
-				$this->error="$bsfile cannot be found in ./, ./css/, ./public/css. \nUse http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/ instead.\n\n";
-				$this->bspaths[]='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/'.$bsfile;
-			}
-		}
+		$this->bspaths=Bootstrap::GetFiles();
 		$this->extension='gehwah';
 	}
 
@@ -53,6 +37,10 @@ class Gehwah
 	public function SetSelector($selector){
 		$this->selector=$selector;
 		$this->regex='/[\\.a-z0-9_ >+\\-]*\\'.$this->selector.'([^a-z0-9_\\-\\{][^{]*{|{)[^}]*}/';
+	}
+
+	public function MakeRegex($selector){
+		return '/[\\.a-z0-9_ >+\\-]*\\'.$selector.'([^a-z0-9_\\-\\{][^{]*{|{)[^}]*}/';
 	}
 
 	public function run(){
@@ -78,10 +66,28 @@ class Gehwah
 			file_put_contents($name.'.'.$this->extension.".css",$this->css);
 	}
 
-	public static function ProcessClasses($classes){
-		print_r($classes);
+	public function rmUnusedClasses($classes){
 		if(is_string($classes)){
-			$classes=preg_split('/[,;]/',$classes);
+			$classes=preg_split('/[,; ]+/',$classes);
+		}
+		if(is_array($classes)){
+			foreach(Bootstrap::GetClasses() as $i=>$bsclasses){
+				$bsfile=CssClasses::rmComments(file_get_contents($this->bspaths[$i]));
+				foreach($bsclasses as $bsclass){
+					if(!in_array($bsclass,$classes)){
+						$bsfile=preg_replace($this->MakeRegex($bsclass),'',$bsfile);
+					}
+				}
+				$this->css.=$bsfile;
+			}
+			$this->css=preg_replace("/@media[^{]*{}/",'',$this->css);
+		}
+		return $this->css;
+	}
+
+	public static function ProcessClasses($classes){
+		if(is_string($classes)){
+			$classes=preg_split('/[,; ]+/',$classes);
 		}
 		if(is_array($classes)){
 			$gw=new Gehwah();
@@ -94,6 +100,12 @@ class Gehwah
 		}
 		else return '';
 	}
+	public static function usage(){
+		$usage_str="	* gehwah -c .[class name] [-e [extension name]]\n	* gehwah -class .[class name] [-ext [extension name]]\n";
+		$usage_str.="\n";
+		return $usage_str;
+	}
+
 }
 
 class HtmlClasses{
@@ -123,8 +135,80 @@ class HtmlClasses{
 	}
 }
 
+class CssClasses{
+	public $css;
+	public $classes;
+	public function __construct($css){
+		$this->css=self::rmComments($css);
+	}
+	public static function rmComments($css){
+		$cmt_regex="/\\/\\*((?!\\*\\/).)*\\*\\//s";
+		$css=preg_replace($cmt_regex,'',$css);
+		return $css;
+	}
+	public function run(){
+		return $this->RetrieveClasses();
+	}
+	public function RetrieveClasses(){
+		$this->classes=array();
+		$regex="/\\.[a-zA-Z][a-zA-Z0-9_-]*/";
+		preg_match_all($regex,$this->css,$matched);
+		if(isset($matched[0])){
+			foreach($matched[0] as $class){
+				if(!in_array($class,$this->classes)){
+					$this->classes[]=$class;
+				}
+			}
+		}
+		return $this->classes;
+	}
+}
+
+class Bootstrap{
+	private static $_files;
+	private static $_classes;
+	private function __construct(){}
+	private function __clone(){}
+
+	private static function Init(){
+		if(self::$_files==null){
+	                $bsfiles=array('bootstrap-theme.min.css','bootstrap.min.css');// bootstrap files, bootstrap.min.css
+	                $bspaths=array();
+	
+	                foreach($bsfiles as $bsfile){
+	                        if(file_exists('./'.$bsfile)){
+	                                $bspaths[]='./'.$bsfile;
+	                        }elseif(file_exists('./css/'.$bsfile)){
+	                                $bspaths[]='./css/'.$bsfile;
+	                        }elseif(file_exists('./public/css'.$bsfile)){
+	                                $bspaths[]='./public/css/'.$bsfile;
+	                        }else{
+	                                $error="$bsfile cannot be found in ./, ./css/, ./public/css. \nUse http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/ instead.\n\n";
+	                                $bspaths[]='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/'.$bsfile;
+	                        }
+	                }
+			self::$_files=$bspaths;
+		}
+	}
+	public static function GetFiles(){
+		self::Init();
+		return self::$_files;
+	}
+	public static function GetClasses(){
+		if(self::$_classes!==null) return self::$_classes;
+		else {
+			self::Init();
+			foreach(self::$_files as $file){
+				$cc=new CssClasses(file_get_contents($file));
+				self::$_classes[]=$cc->run();
+			}
+			return self::$_classes;
+		}
+	}
+}
+
 class Requests{
-	public static $_requests;
+	private static $_requests;
 
 	private function __construct(){}
 	private function __clone(){}
