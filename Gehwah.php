@@ -39,7 +39,15 @@ class Gehwah
 		$this->regex='/[\\.a-z0-9_ >+\\-]*\\'.$this->selector.'([^a-z0-9_\\-\\{][^{]*{|{)[^}]*}/';
 	}
 
-	public function MakeRegex($selector){
+	public function CommaBeforeRegex($selector){
+		return '/,[^,{}]*\\'.$selector.'[^,{}]*/';
+	}
+
+	public function CommaAfterRegex($selector){
+		return '/[^,{}]*\\'.$selector.'[^,{}]*,/';
+	}
+
+	public function CssRegex($selector){
 		return '/[\\.a-z0-9_ >+\\-]*\\'.$selector.'([^a-z0-9_\\-\\{][^{]*{|{)[^}]*}/';
 	}
 
@@ -75,7 +83,15 @@ class Gehwah
 				$bsfile=CssClasses::rmComments(file_get_contents($this->bspaths[$i]));
 				foreach($bsclasses as $bsclass){
 					if(!in_array($bsclass,$classes)){
-						$bsfile=preg_replace($this->MakeRegex($bsclass),'',$bsfile);
+						echo "removing $bsclass\n";
+						$bsfile=preg_replace($this->CommaBeforeRegex($bsclass),'',$bsfile);
+						$bsfile=preg_replace($this->CommaAfterRegex($bsclass),'',$bsfile);
+						$bsfile=preg_replace($this->CssRegex($bsclass),'',$bsfile);
+						if(preg_match('/\\.nav{/',$bsfile)){
+							echo "	.nav exists\n";
+						} else {
+							echo "				.nav missing\n";
+						}
 					}
 				}
 				$this->css.=$bsfile;
@@ -254,8 +270,23 @@ class Bootstrap{
 				$cc=new CssClasses(file_get_contents($file));
 				self::$_classes[]=$cc->run();
 			}
+			self::rmNonclasses();
 			return self::$_classes;
 		}
+	}
+	public static function rmNonclasses($exts=null){
+		$extensions=array('.eot','.woff','.ttf','.svg','.Microsoft','.gradient');
+		if(is_array($exts)){
+			$extensions=array_merge($extensions,$exts);
+		}
+		foreach($extensions as $ext){
+			for($i=0;$i<count(self::$_classes);$i++){
+				if(false!==($key=array_search($ext,self::$_classes[$i]))){
+					unset(self::$_classes[$i][$key]);
+				}
+			}
+		}
+		return self::$_classes;
 	}
 }
 
