@@ -1,6 +1,12 @@
 AUTHOR: Billy Cai
 Email: tsalufe@gmail.com
 
+Here I am dealing with html class names. In css files, a class name start with '.' ( except file extensions in url(), or object properties). In html files, a class can be found in "class='classname'".
+
+=============
+Part I - gehwah.php
+[test available at www.loudpicks.com/gehwah.php?class=.navbar-inverse ]
+
 Gehwah is a Bootstrap helper. It makes a developer's life easier by extracting specific Bootstrap css styles from Bootstrap css files. Gehwah recognizes the following folders to search for bootstrap files:
 	* ./
 	* ./css/
@@ -19,5 +25,22 @@ gehwah.php -c|-class [class name] [-option value]
 
 [-option value] is optional. For example,
 -e abc is to save the found css styles into files with '.abc.' replacing '.min.' in bootstrap css files, including bootstrap.min.css, bootstrap-theme.min.css.
+
+==================
+Part II - Gehwah.php
+
+CssClasses : get classes from a css string. After loading a css string from bootstrap css files and processing the classes, one should unset .Microsoft,.gradient, .eot, .ttf, .svg, .woff from the classes.
+
+CssTags: get tags from a css string.
+
+HtmlClasses: get classes from a html string and add '.' before each class.
+
+HtmlTags: get tags from a html string.
+
+Bootstrap: get all classes from bootstrap css files.
+
+Gehwah: Gehwah::rmUnusedClasses($classes) remove unused classes from bootstrap files. Used classes are defined in $classes. Unsed classes are defeind in Bootstrap::GetClasses() but not in $classes.
+
+Example. www.loudpicks.com/account/, see loudpicks.account.bootstrap.gehwah.css in <head>. Its size is about 1/8 of all bootstrap files. 
 
 Billy 
