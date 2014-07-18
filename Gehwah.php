@@ -83,15 +83,9 @@ class Gehwah
 				$bsfile=CssClasses::rmComments(file_get_contents($this->bspaths[$i]));
 				foreach($bsclasses as $bsclass){
 					if(!in_array($bsclass,$classes)){
-						echo "removing $bsclass\n";
 						$bsfile=preg_replace($this->CommaBeforeRegex($bsclass),'',$bsfile);
 						$bsfile=preg_replace($this->CommaAfterRegex($bsclass),'',$bsfile);
 						$bsfile=preg_replace($this->CssRegex($bsclass),'',$bsfile);
-						if(preg_match('/\\.nav{/',$bsfile)){
-							echo "	.nav exists\n";
-						} else {
-							echo "				.nav missing\n";
-						}
 					}
 				}
 				$this->css.=$bsfile;
