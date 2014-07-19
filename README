@@ -41,6 +41,6 @@ Bootstrap: get all classes from bootstrap css files.
 
 Gehwah: Gehwah::rmUnusedClasses($classes) remove unused classes from bootstrap files. Used classes are defined in $classes. Unsed classes are defeind in Bootstrap::GetClasses() but not in $classes.
 
-Example. www.loudpicks.com/account/, see loudpicks.account.bootstrap.gehwah.css in <head>. Its size is about 1/8 of all bootstrap files. ( Though, some issues are there to fix.) 
+Example. www.loudpicks.com/account/, see loudpicks.account.bootstrap.gehwah.css in <head>. Its size is about 1/8 of all bootstrap files.
 
 Billy 
