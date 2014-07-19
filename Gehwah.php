@@ -1,5 +1,8 @@
 <?php
 
+/**
+* run Gehwah to trim bootstrap files to minimal size for classes used in online html file, if a valid url is given
+**/
 function run(){
 	Requests::InitForGehwah();
 	$requests=Requests::All();
@@ -15,28 +18,52 @@ function run(){
 
 run();
 
+/**
+* Gehwah is the class to get css styles of a class from bootstrap files
+* or
+* to trim bootstrap files to minimal size for classes passed to it.
+**/
 class Gehwah
 {
+	/**
+	* bootstrap file paths
+	*/
 	public $bspaths;
 	public $nomedia_regex='';
 	public $media_regex='';
+	/**
+	* a class starting with '.'
+	*/
 	public $selector;
+	/**
+	* file extension for saving results
+	*/
 	public $extension;
 
 	public $bstags;
 	public $bsmedias;
 	public $bsclasses;
 
+	/**
+	* css results found in bootstrap files
+	*/
 	public $css='';
 
 	public $logs='';
 	public $error='';
 
+	/**
+	* construct Gehwah by init paths to bootstrap files
+	*/
 	public function __construct(){
 
 		$this->bspaths=Bootstrap::GetFiles();
 		$this->extension='gehwah';
 	}
+
+	/**
+	* Init Gehwah parameters from Requests::All() or array
+	*/
 
 	public function InitFromRequests($options=null){
 		if($options==null||!is_array($options)) Requests::InitForGehwah();
@@ -49,26 +76,52 @@ class Gehwah
 		if(isset($allR['ext'])) $this->extension=$allR['ext'];
 	}
 
+	/**
+	* set class selector and init the regular expression of its css styles
+	*/
+
 	public function SetSelector($selector){
 		$this->selector=$selector;
 		$this->regex='/[\\.a-z0-9_ >+\\-]*\\'.$this->selector.'([^a-z0-9_\\-\\{][^{]*{|{)[^}]*}/';
 	}
 
+	/**
+	* return the regular expression for full class definition starting with ','
+	* e.g. ,.row .col-md-12 for .col-md-12
+	*/
+
 	public function CommaBeforeRegex($selector){
 		return '/,[^,{}]*\\'.$selector.'(?![a-zA-Z0-9_-])[^,{}]*/';
 	}
+
+	/**
+	* return the regular expression for full class definition ending with ','
+	* e.g. .col-md-12 .abc, for .col-md-12
+	*/
 
 	public function CommaAfterRegex($selector){
 		return '/[^,{}]*\\'.$selector.'(?![a-zA-Z0-9_-])[^,{}]*,/';
 	}
 
+	/**
+	* return the regular expression for the full css styles of a class
+	* e.g. .row .col-md-12{ color:red;}
+	*/
 	public function CssRegex($selector){
 		return '/[\\.a-z0-9_ >+\\-]*\\'.$selector.'(?![a-zA-Z0-9_-])[^{]*{[^}]*}/';
 	}
 
+	/**
+	* run GetCssFromBootstrap
+	*/
+
 	public function run(){
 		return $this->GetCssFromBootstrap();
 	}
+
+	/**
+	* get css styles from bootstrap files for the class $this->selector
+	*/
 	
 	public function GetCssFromBootstrap(){
 		foreach($this->bspaths as $i=>$bspath){
@@ -85,10 +138,17 @@ class Gehwah
 		}
 		return $this->css;
 	}
+
+	/**
+	* save $this->css to file with added extension
+	*/
 	public function SaveToFile($name){
 			file_put_contents($name.'.'.$this->extension.".css",$this->css);
 	}
 
+	/**
+	* remove unused classes in bootstrap files but not in $classes
+	*/
 	public function rmUnusedClasses($classes){
 		if(is_string($classes)){
 			$classes=preg_split('/[,; ]+/',$classes);
@@ -110,39 +170,35 @@ class Gehwah
 		}
 		return $this->css;
 	}
-
-	public static function ProcessClasses($classes){
-		if(is_string($classes)){
-			$classes=preg_split('/[,; ]+/',$classes);
-		}
-		if(is_array($classes)){
-			$gw=new Gehwah();
-			$css='';
-			foreach($classes as $class){
-				$gw->SetSelector($class);
-				$css.=$gw->GetCssFromBootstrap();
-			}
-			return $css;
-		}
-		else return '';
-	}
-	public static function usage(){
-		$usage_str="	* gehwah -c .[class name] [-e [extension name]]\n	* gehwah -class .[class name] [-ext [extension name]]\n";
-		$usage_str.="\n";
-		return $usage_str;
-	}
-
 }
 
+/**
+* process html string to get classes in the string
+*/
 class HtmlClasses{
+	/**
+	* html string
+	*/
 	public $html;
+	/**
+	* classes to be obtained from $this->html
+	*/
 	public $classes;
+	/**
+	* construct the class from html string
+	*/
 	public function __construct($html){
 		$this->html=$html;
 	}
+	/**
+	* run $this->RetrieveClasses
+	*/
 	public function run(){
 		return $this->RetrieveClasses();
 	}
+	/**
+	* retrieve classes defined in the html context
+	*/
 	public function RetrieveClasses(){
 		$this->classes=array();
 		$regex="/<[^>]*class=['\"]([^'\"]+)['\"][^>]*>/";
@@ -161,6 +217,9 @@ class HtmlClasses{
 	}
 }
 
+/**
+* object to obtain all tags defined in an html context
+*/
 class HtmlTags{
 	public $html;
 	public $tags;
@@ -185,12 +244,18 @@ class HtmlTags{
 	}
 }
 
+/**
+* object to retrieve classes defined in css styling string
+*/
 class CssClasses{
 	public $css;
 	public $classes;
 	public function __construct($css){
 		$this->css=self::rmComments($css);
 	}
+	/**
+	* static function: remove comments from a css string
+	*/
 	public static function rmComments($css){
 		$cmt_regex="/\\/\\*((?!\\*\\/).)*\\*\\//s";
 		$css=preg_replace($cmt_regex,'',$css);
@@ -214,12 +279,19 @@ class CssClasses{
 	}
 }
 
+/**
+* object to retrieve all tags defined in css string
+*/
 class CssTags{
 	public $css;
 	public $tags;
 	public function __construct($css){
 		$this->css=self::rmComments($css);
 	}
+	/**
+	* static function
+	* remove comments from css string
+	*/
 	public static function rmComments($css){
 		$cmt_regex="/\\/\\*((?!\\*\\/).)*\\*\\//s";
 		$css=preg_replace($cmt_regex,'',$css);
@@ -242,6 +314,10 @@ class CssTags{
 		return $this->tags;
 	}
 }
+
+/**
+* object to locate bootstrap files and retrieve the classes from the files
+*/
 class Bootstrap{
 	private static $_files;
 	private static $_classes;
@@ -300,6 +376,9 @@ class Bootstrap{
 	}
 }
 
+/**
+* object to merge requests made by $_GET,$_POST,$_argv or input array
+*/
 class Requests{
 	private static $_requests;
 
