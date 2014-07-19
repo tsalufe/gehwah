@@ -3,11 +3,13 @@ Email: tsalufe@gmail.com
 
 Here I am dealing with html class names. In css files, a class name start with '.' ( except file extensions in url(), or object properties). In html files, a class can be found in "class='classname'".
 
+Gehwah is a Bootstrap cleaner. 
+
 =============
 Part I - gehwah.php
 [test available at www.loudpicks.com/gehwah.php?class=.navbar-inverse ]
 
-Gehwah is a Bootstrap helper. It makes a developer's life easier by extracting specific Bootstrap css styles from Bootstrap css files. Gehwah recognizes the following folders to search for bootstrap files:
+Gehwah is a Bootstrap cleaner. It makes a developer's life easier by extracting specific Bootstrap css styles from Bootstrap css files and modify it. Gehwah recognizes the following folders to search for bootstrap files:
 	* ./
 	* ./css/
 	* ./public/css/
