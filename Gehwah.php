@@ -1,5 +1,20 @@
 <?php
 
+function run(){
+	Requests::InitForGehwah();
+	$requests=Requests::All();
+	if(isset($requests['url'])){
+		if(preg_match('/^http[s]{0,1}:\/\//',$requests['url'])){
+			$html=file_get_contents($requests['url']);
+			$hc=new HtmlClasses($html);
+			$gw=new Gehwah();
+			echo $gw->rmUnusedClasses($hc->run());
+		}
+	}
+}
+
+run();
+
 class Gehwah
 {
 	public $bspaths;
@@ -78,7 +93,7 @@ class Gehwah
 		if(is_string($classes)){
 			$classes=preg_split('/[,; ]+/',$classes);
 		}
-		if(is_array($classes)){
+		if(is_array($classes)&&count($classes)>0){
 			foreach(Bootstrap::GetClasses() as $i=>$bsclasses){
 				$bsfile=CssClasses::rmComments(file_get_contents($this->bspaths[$i]));
 				foreach($bsclasses as $bsclass){
@@ -319,6 +334,12 @@ class Requests{
 							$allR['class']=$argv[$i];
 						} else{
 							$allR['class']='';
+						}
+						break;
+				case '-url': if(++$i<$argc){
+							$allR['url']=$argv[$i];
+						} else{
+							$allR['url']='';
 						}
 						break;
 				case '-e':
