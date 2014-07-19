@@ -1,23 +1,27 @@
 AUTHOR: Billy Cai
 Email: tsalufe@gmail.com
 
-Here I am dealing with html class names. In css files, a class name start with '.' ( except file extensions in url(), or object properties). In html files, a class can be found in "class='classname'".
+=============
+Summary
 
-Gehwah is a Bootstrap cleaner. 
+Gehwah package is a Bootstrap cleaner. It has too parts: gehwah.php and Gehwah.php ( my poor namings!). (1) gehwah.php can extract the css styles for a class as an input, runable from command line or with get/post requests. (2) Gehwah.php provides the classes, especially Gehwah, needed to process html file/string or class arrays and minize the size of bootstrap files to the classes used.
+ 
+In this package, 'class' is used everywhere. It could mean an php class or an html class. But here mostly it means a html class. In css files, a class name start with '.' ( except file extensions in url(), or object properties). In html files, a class can be found in "class='classname'".
+
 
 =============
 Part I - gehwah.php
 [test available at www.loudpicks.com/gehwah.php?class=.navbar-inverse ]
 
-Gehwah is a Bootstrap cleaner. It makes a developer's life easier by extracting specific Bootstrap css styles from Bootstrap css files and modify it. Gehwah recognizes the following folders to search for bootstrap files:
+It makes a developer's life easier by extracting specific Bootstrap css styles from Bootstrap css files and modify it to the developer's need. gehwah.php( also Gehwah) recognizes the following folders to find the bootstrap files:
 	* ./
 	* ./css/
 	* ./public/css/
-If above folders are not existing, then http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/ will be used to get bootstrap css files.
+If above folders does not exist, then http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/ will be used to get bootstrap css files.
 
-By default, Gehwah saves the results in ./bootstrap.gehwah.css, ./bootstrap-theme.gehwah.css. 
+By default, gehwah saves the results in ./bootstrap.gehwah.css, ./bootstrap-theme.gehwah.css. 
 
-Gehwah accepts GET and POST requests from www.gehwah.com (coming soon) where $_REQUEST['class'] must be given.
+gehwah also accepts GET and POST requests from www.loudpicks.com/gehwah.php (coming soon) where $_REQUEST['class'] must be given.
 
 It also can be run as command lines. Usage of Gehwah in command line is:
 
@@ -31,17 +35,21 @@ gehwah.php -c|-class [class name] [-option value]
 ==================
 Part II - Gehwah.php
 
-CssClasses : get classes from a css string. After loading a css string from bootstrap css files and processing the classes, one should unset .Microsoft,.gradient, .eot, .ttf, .svg, .woff from the classes.
+Gehwah.php provides many interfaces to process html string/file, classes array so that bootstrap files are reduced to the minimal size that unused classes are removed with their styles. ( all tags in bootstrap files are kept )
 
-CssTags: get tags from a css string.
+function run(): run Gehwah to process online html file if 'url' is given
 
-HtmlClasses: get classes from a html string and add '.' before each class.
+Class CssClasses : get classes from a css string. After loading a css string from bootstrap css files and processing the classes, one should unset .Microsoft,.gradient, .eot, .ttf, .svg, .woff from the classes.
 
-HtmlTags: get tags from a html string.
+Class CssTags: get tags from a css string.
 
-Bootstrap: get all classes from bootstrap css files.
+Class HtmlClasses: get classes from a html string and add '.' before each class.
 
-Gehwah: Gehwah::rmUnusedClasses($classes) remove unused classes from bootstrap files. Used classes are defined in $classes. Unsed classes are defeind in Bootstrap::GetClasses() but not in $classes.
+Class HtmlTags: get tags from a html string.
+
+Class Bootstrap: get all classes from bootstrap css files.
+
+Class Gehwah: Gehwah::rmUnusedClasses($classes) remove unused classes from bootstrap files. Used classes are defined in $classes. Unsed classes are defeind in Bootstrap::GetClasses() but not in $classes.
 
 Example. www.loudpicks.com/account/, see loudpicks.account.bootstrap.gehwah.css in <head>. Its size is about 1/8 of all bootstrap files.
 
