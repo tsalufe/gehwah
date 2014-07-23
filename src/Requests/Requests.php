@@ -22,7 +22,7 @@ class Requests{
 	}
 
 	public static function Add($array){
-		if(self::$_requests==null) self::$_requests=array();
+		if(self::$_requests==null) self::Init();
 		if(count($array)>0){
 			self::$_requests=array_merge(self::$_requests,$array);
 		}
