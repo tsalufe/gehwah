@@ -16,8 +16,10 @@ goto www.gehwah.com/run/class/.navbar
 
 ============
 To minimize the size of the bootstrap styles to the need of your website,
-./run.php -url 'http://www.loudpicks.com/account'
+./run.php -url 'http://www.loudpicks.com/account' -with=.navbar,.navbar-inverse,.btn-danger
 or
 goto www.gehwah.com/run/url/www.loudpicks.com/account
+
+Example. www.loudpicks.com/account 
 
 Billy
