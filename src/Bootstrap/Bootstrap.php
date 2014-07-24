@@ -72,13 +72,14 @@ class Bootstrap{
 		if(self::$_elements!==null) return self::$_elements;
 		else{
 			self::Init();
+			self::$_elements=array();
 			foreach(self::$_files as $file){
 				$css=file_get_contents($file);
 				$css=\CSS\Classes::rmComments($css);
 				$medias=MediaElement::parseAll($css);
 				$css=MediaElement::rmMedia($css);
 				$eles=Element::parseAll($css);
-				self::$_elements=array_merge($eles,$medias);
+				self::$_elements=array_merge(self::$_elements,$eles,$medias);
 			}
 			return self::$_elements;
 		}
