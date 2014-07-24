@@ -3,6 +3,8 @@
 namespace Bootstrap;
 
 use CSS\Classes;
+use CSS\Element;
+use CSS\MediaElement;
 
 /**
 B
@@ -11,6 +13,7 @@ B
 class Bootstrap{
 	private static $_files;
 	private static $_classes;
+	private static $_elements;
 	private function __construct(){}
 	private function __clone(){}
 
@@ -63,5 +66,21 @@ class Bootstrap{
 			}
 		}
 		return self::$_classes;
+	}
+
+	public static function GetElements(){
+		if(self::$_elements!==null) return self::$_elements;
+		else{
+			self::Init();
+			foreach(self::$_files as $file){
+				$css=file_get_contents($file);
+				$css=\CSS\Classes::rmComments($css);
+				$medias=MediaElement::parseAll($css);
+				$css=MediaElement::rmMedia($css);
+				$eles=Element::parseAll($css);
+				self::$_elements=array_merge($eles,$medias);
+			}
+			return self::$_elements;
+		}
 	}
 }

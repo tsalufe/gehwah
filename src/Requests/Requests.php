@@ -62,6 +62,7 @@ class Requests{
 		$allR=& self::$_requests;
 		if(isset($allR['-c'])) $allR['class']=$allR['-c'];
 		if(isset($allR['-e'])) $allR['ext']=$allR['-e'];
+		if(isset($allR['-url'])) $allR['url']=$allR['-url'];
 		if(isset($allR['-extension'])) $allR['ext']=$allR['-extension'];
 	}
 }

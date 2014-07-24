@@ -27,12 +27,50 @@ class MediaElement{
 			$elem->setMedia($this->scope);
 		}
 	}
+	public function __toString(){
+		$style='';
+		foreach($this->elements as $elem){
+			$style.=$elem;
+		}
+		return $this->scope.'{'.$style.'}';
+	}
 	public static function splitMedia($css_str){
-		preg_match_all('/(@[^{]+){(([^{]+{[^}]*})*)}/',$css_str,$css_parts);
+		preg_match_all('/(@[^{}]+){(([^{}]+{[^{}]*})*)}/',$css_str,$css_parts);
 		return $css_parts;
 	}
+	public function reduceTo($class){
+		$media=new MediaElement();
+		$media->setScope($this->scope);
+		$media->elements=array();
+		foreach($this->elements as $elem){
+			$el=$elem->reduceTo($class);
+			if($el){
+				$el->setMedia($this->scope);
+				$media->elements[]=$el;
+			}
+		}
+		if(count($media->elements)>0) return $media;
+		else return null;
+	}
+	public function reduceIn($classes){
+		if(is_array($classes)){
+			$media=new MediaElement();
+			$media->setScope($this->scope);
+			$media->elements=array();
+			foreach($this->elements as $elem){
+				$el=$elem->reduceIn($classes);
+				if($el){
+					$el->setMedia($this->scope);
+					$media->elements[]=$el;
+				}
+			}
+			if(count($media->elements)>0) return $media;
+			else return null;
+		}
+		else return null;
+	}
 	public static function rmMedia($css_str){
-		$media_rm=preg_replace('/(@[^{]+){(([^{]+{[^}]*})*)}/','',$css_str);
+		$media_rm=preg_replace('/(@[^{}]+){(([^{}]+{[^{}]*})*)}/','',$css_str);
 		return $media_rm;
 	}
 

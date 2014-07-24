@@ -126,6 +126,30 @@ class Gehwah
 		return $this->css;
 	}
 
+	public function GetElementsFromBootstrap(){
+		$belems=\Bootstrap\Bootstrap::GetElements();
+		$elements=array();
+		foreach($belems as $belem){
+			$el=$belem->reduceTo($this->class);
+			if($el!=null){
+				$elements[]=$el;
+			}
+		}
+		return $elements;
+	}
+
+	public static function GetElementsInClasses($classes){
+		$belems=\Bootstrap\Bootstrap::GetElements();
+		$elements=array();
+		foreach($belems as $belem){
+			$el=$belem->reduceIn($classes);
+			if($el!=null){
+				$elements[]=$el;
+			}
+		}
+		return $elements;
+	}
+
 	/**
 	* save $this->css to file with added extension
 	*/
@@ -142,7 +166,7 @@ class Gehwah
 		}
 		if(is_array($classes)&&count($classes)>0){
 			foreach(Bootstrap::GetClasses() as $i=>$bsclasses){
-				$bsfile=CssClasses::rmComments(file_get_contents($this->bspaths[$i]));
+				$bsfile=\CSS\Classes::rmComments(file_get_contents($this->bspaths[$i]));
 				foreach($bsclasses as $bsclass){
 					if(!in_array($bsclass,$classes)){
 						//echo "removing $bsclass\n";

@@ -27,10 +27,49 @@ class Element{
 	public function setMedia($media){
 		$this->media=$media;
 	}
+	public function __toString(){
+		return $this->scope.'{'.$this->style.'}';
+	}
 	public static function splitCss($css_str){
 		preg_match_all('/([^{]+){([^}]*)}/',$css_str,$css_parts);
 		return $css_parts;
 	}
+	public function reduceTo($class){
+		$scopes=explode(',',$this->scope);
+		foreach($scopes as $i=>$scope){
+			if(!preg_match('/\\'.$class.'(?![a-zA-Z0-9_-])/',$scope)){
+				unset($scopes[$i]);
+			}
+		}
+		if(count($scopes)>0){
+			$ele=new Element();
+			$ele->setScope(implode(',',$scopes));
+			$ele->setStyle($this->style);
+			return $ele;
+		} else return null;
+	}
+	public function reduceIn($classes){
+		$scopes=explode(',',$this->scope);
+		foreach($scopes as $i=>$scope){
+			$match_one=false;
+			foreach($classes as $class){
+				if(preg_match('/\\'.$class.'(?![a-zA-Z0-9_-])/',$scope)){
+					$match_one=true;
+					break;
+				}
+			}
+			if(!$match_one) {
+				unset($scopes[$i]);
+			}
+		}
+		if(count($scopes)>0){
+			$ele=new Element();
+			$ele->setScope(implode(',',$scopes));
+			$ele->setStyle($this->style);
+			return $ele;
+		} else return null;
+	}
+
 	public static function rmElement($css_str){
 		$ele_rm=preg_replace('/([^{]+){([^}]*)}/','',$css_str);
 		return $ele_rm;
