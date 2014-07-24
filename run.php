@@ -24,6 +24,10 @@ function run(){
 			$classes=array_merge($classes,$with);
 			foreach(Gehwah::GetElementsInClasses($classes) as $elem) echo $elem;
 		}
+	} elseif(isset($requests['class'])){
+		$gw=new Gehwah();
+		$gw->setSelector($requests['class']);
+		foreach($gw->GetElementsFromBootstrap() as $elem) echo $elem;
 	}
 }
 
