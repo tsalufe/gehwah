@@ -130,7 +130,7 @@ class Gehwah
 		$belems=\Bootstrap\Bootstrap::GetElements();
 		$elements=array();
 		foreach($belems as $belem){
-			$el=$belem->reduceTo($this->class);
+			$el=$belem->reduceTo($this->selector);
 			if($el!=null){
 				$elements[]=$el;
 			}
