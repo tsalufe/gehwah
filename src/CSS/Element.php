@@ -37,7 +37,7 @@ class Element{
 	public function reduceTo($class){
 		$scopes=explode(',',$this->scope);
 		foreach($scopes as $i=>$scope){
-			if(!preg_match('/\\'.$class.'(?![a-zA-Z0-9_-])/',$scope)){
+			if(!preg_match('/\\*/',$scope)&&!preg_match('/\\'.$class.'(?![a-zA-Z0-9_-])/',$scope)){
 				unset($scopes[$i]);
 			}
 		}
@@ -53,7 +53,7 @@ class Element{
 		foreach($scopes as $i=>$scope){
 			$match_one=false;
 			foreach($classes as $class){
-				if(preg_match('/\\'.$class.'(?![a-zA-Z0-9_-])/',$scope)){
+				if(preg_match('/\\*/',$scope)||preg_match('/\\'.$class.'(?![a-zA-Z0-9_-])/',$scope)){
 					$match_one=true;
 					break;
 				}
