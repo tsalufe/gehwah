@@ -8,49 +8,16 @@ Gehwah package is a Bootstrap cleaner. It has too parts: gehwah.php and Gehwah.p
  
 In this package, 'class' is used everywhere. It could mean an php class or an html class. But here mostly it means a html class. In css files, a class name start with '.' ( except file extensions in url(), or object properties). In html files, a class can be found in "class='classname'".
 
+============
+To find all styles about a class in bootstrap
+./run.php -c .navbar
+or
+goto www.gehwah.com/run/class/.navbar
 
-=============
-Part I - gehwah.php
-[test available at www.loudpicks.com/gehwah.php?class=.navbar-inverse ]
+============
+To minimize the size of the bootstrap styles to the need of your website,
+./run.php -url 'http://www.loudpicks.com/account'
+or
+goto www.gehwah.com/run/url/www.loudpicks.com/account
 
-It makes a developer's life easier by extracting specific Bootstrap css styles from Bootstrap css files and modify it to the developer's need. gehwah.php( also Gehwah) recognizes the following folders to find the bootstrap files:
-	* ./
-	* ./css/
-	* ./public/css/
-If above folders does not exist, then http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/ will be used to get bootstrap css files.
-
-By default, gehwah saves the results in ./bootstrap.gehwah.css, ./bootstrap-theme.gehwah.css. 
-
-gehwah also accepts GET and POST requests from www.loudpicks.com/gehwah.php (coming soon) where $_REQUEST['class'] must be given.
-
-It also can be run as command lines. Usage of Gehwah in command line is:
-
-gehwah.php -c|-class [class name] [-option value]
-
--c [class name] is required for Gehwah to start, for example gehwah.php -c .navbar-inverse is to show all css styles defined for .navbar-inverse. In example/modified navbar-inverse/, there is modified .navbar-inverse, namely .navbar-gehwah which has the same styling effects as .navbar-inverse, but different color.
-
-[-option value] is optional. For example,
--e abc is to save the found css styles into files with '.abc.' replacing '.min.' in bootstrap css files, including bootstrap.min.css, bootstrap-theme.min.css.
-
-==================
-Part II - Gehwah.php
-
-Gehwah.php provides many interfaces to process html string/file, classes array so that bootstrap files are reduced to the minimal size that unused classes are removed with their styles. ( all tags in bootstrap files are kept )
-
-function run(): run Gehwah to process online html file if 'url' is given
-
-Class CssClasses : get classes from a css string. After loading a css string from bootstrap css files and processing the classes, one should unset .Microsoft,.gradient, .eot, .ttf, .svg, .woff from the classes.
-
-Class CssTags: get tags from a css string.
-
-Class HtmlClasses: get classes from a html string and add '.' before each class.
-
-Class HtmlTags: get tags from a html string.
-
-Class Bootstrap: get all classes from bootstrap css files.
-
-Class Gehwah: Gehwah::rmUnusedClasses($classes) remove unused classes from bootstrap files. Used classes are defined in $classes. Unsed classes are defeind in Bootstrap::GetClasses() but not in $classes.
-
-Example. www.loudpicks.com/account/, see loudpicks.account.bootstrap.gehwah.css in <head>. Its size is about 1/8 of all bootstrap files.
-
-Billy 
+Billy
