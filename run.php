@@ -22,8 +22,7 @@ function run(){
 				$with=preg_split('/[,;]+/',$requests['with']);
 			}
 			$classes=array_merge($classes,$with);
-			$gw=new Gehwah();
-			echo $gw->rmUnusedClasses($classes);
+			foreach(Gehwah::GetElementsInClasses($classes) as $elem) echo $elem;
 		}
 	}
 }
