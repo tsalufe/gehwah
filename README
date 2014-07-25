@@ -12,13 +12,13 @@ In this package, 'class' is used everywhere. It could mean an php class or an ht
 To find all styles about a class in bootstrap
 ./run.php -c .navbar
 or
-goto www.gehwah.com/run/class/.navbar
+goto www.gehwah.com/run/?class=.navbar
 
 ============
 To minimize the size of the bootstrap styles to the need of your website,
 ./run.php -url 'http://www.loudpicks.com/account' -with=.navbar,.navbar-inverse,.btn-danger
 or
-goto www.gehwah.com/run/url/www.loudpicks.com/account
+goto www.gehwah.com/run/?url=www.loudpicks.com/account
 
 Example. www.loudpicks.com/account 
 
